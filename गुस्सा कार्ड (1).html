@@ -1,0 +1,603 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>गुस्सा कार्ड</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Mukta:wght@500;700&family=Yatra+One&display=swap" rel="stylesheet">
+<style>
+/* Layout: one comic panel, art on top, name tags over each fighter, caption strip under the art, sound button and punch counter below. */
+:root{
+  --bg:#2b2166; --ink:#17112e; --sun:#ffd93b; --sun-deep:#ffb81f; --fire:#ff4d2e; --pink:#ff5fa2; --white:#ffffff;
+  --floor:#5a3fb8;
+  --skin-a:#d9935f; --skin-b:#f7c59a; --hair-a:#2a1722; --hair-b:#1a1a2e;
+  --shirt-a:#ff5fa2; --shirt-b:#2fc4d8; --pants-a:#3b2b8c; --pants-b:#3d4a6b;
+  --mouth:#7a0f2b; --tongue:#ff6b8a; --bruise:#7b3fa0;
+  --f-display:'Yatra One','Noto Serif Devanagari','Mangal',serif;
+  --f-body:'Mukta','Noto Sans Devanagari','Mangal',system-ui,sans-serif;
+  --f-name:'Kalam','Noto Sans Devanagari','Mangal',cursive;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  background-color:var(--bg);
+  background-image:radial-gradient(rgba(255,255,255,.07) 1.5px,transparent 1.6px);
+  background-size:18px 18px;
+  color:var(--white);
+  font-family:var(--f-body);
+  font-size:16px;
+  padding-block:20px 28px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+.wrap{max-width:560px;margin:0 auto;display:grid;gap:18px}
+.head{display:grid;gap:10px;justify-items:start}
+.eyebrow{
+  margin:0;background:var(--sun);color:var(--ink);border:3px solid var(--ink);
+  box-shadow:3px 3px 0 var(--pink);padding:2px 12px;font-weight:700;font-size:15px;
+  transform:rotate(-1.5deg);
+}
+h1{
+  margin:0;font-family:var(--f-display);font-weight:400;
+  font-size:clamp(32px,9vw,52px);line-height:1.2;color:var(--sun);
+  text-shadow:3px 3px 0 var(--fire),5px 5px 0 var(--ink);text-wrap:balance;
+}
+.panel{border:5px solid var(--ink);border-radius:4px;box-shadow:8px 8px 0 var(--pink);overflow:hidden;background:var(--ink)}
+.stage{
+  position:relative;aspect-ratio:400/340;max-width:100%;
+  background:repeating-conic-gradient(from 0deg at 50% 52%,var(--sun) 0 6deg,var(--sun-deep) 6deg 12deg);
+}
+.stage::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(rgba(23,17,46,.2) 1.6px,transparent 1.8px) 0 0/12px 12px;
+  -webkit-mask-image:linear-gradient(to top,#000,transparent 70%);mask-image:linear-gradient(to top,#000,transparent 70%);
+}
+#scene{position:relative;display:block;width:100%;height:100%}
+.tag{position:absolute;top:2%;width:36%;transform:translateX(-50%) rotate(-3deg)}
+.tag.a{left:30%}
+.tag.b{left:71.25%;transform:translateX(-50%) rotate(3deg)}
+.tag input{
+  display:block;width:100%;font-family:var(--f-name);font-weight:700;font-size:clamp(15px,4.4vw,20px);line-height:1.3;
+  text-align:center;background:var(--white);color:var(--ink);border:3px solid var(--ink);border-radius:4px;
+  padding:3px 6px;box-shadow:3px 3px 0 var(--ink);
+}
+.tag::after{
+  content:"";position:absolute;left:50%;bottom:-9px;width:12px;height:12px;background:var(--white);
+  border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:translateX(-50%) rotate(45deg);
+}
+.tag input:focus-visible{outline:3px solid var(--fire);outline-offset:2px}
+.sfx-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.sfx{
+  position:absolute;white-space:nowrap;font-family:var(--f-display);font-size:clamp(28px,8vw,46px);line-height:1.2;color:var(--white);
+  text-shadow:-3px -3px 0 var(--ink),3px -3px 0 var(--ink),-3px 3px 0 var(--ink),3px 3px 0 var(--ink),0 6px 0 var(--fire);
+}
+.caption{
+  margin:0;background:var(--white);color:var(--ink);border-top:4px solid var(--ink);
+  padding:10px 14px;font-weight:700;font-size:clamp(17px,4.8vw,21px);line-height:1.35;min-height:3.2em;display:flex;align-items:center;
+}
+.bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
+.btn{
+  font-family:var(--f-display);font-size:18px;line-height:1.2;min-height:48px;padding:10px 20px;cursor:pointer;
+  background:var(--sun);color:var(--ink);border:3px solid var(--ink);border-radius:4px;box-shadow:4px 4px 0 var(--fire);
+}
+.btn[aria-pressed="true"]{background:var(--pink)}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--fire)}
+.btn:focus-visible{outline:3px solid var(--white);outline-offset:3px}
+.count{margin:0;font-weight:700;font-size:17px;display:flex;align-items:baseline;gap:10px}
+.count .n{font-family:var(--f-display);font-size:32px;color:var(--sun);font-variant-numeric:tabular-nums;min-width:2ch;text-align:right}
+.hint{margin:0;font-size:14px;color:rgba(255,255,255,.78)}
+
+.forgive{width:100%;font-size:clamp(20px,6vw,26px);padding:14px 20px;background:var(--pink);box-shadow:5px 5px 0 var(--sun)}
+.forgive[aria-pressed="true"]{background:var(--shirt-b)}
+.forgive:active{box-shadow:2px 2px 0 var(--sun)}
+
+/* SVG art */
+.o{stroke:var(--ink);stroke-width:4;stroke-linejoin:round;stroke-linecap:round}
+.o3{stroke:var(--ink);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.floor{fill:var(--floor)}
+.floorline{stroke:var(--ink);stroke-width:5}
+.shadow{fill:#000;opacity:.28}
+.f-skin-a{fill:var(--skin-a)}.f-skin-b{fill:var(--skin-b)}
+.f-hair-a{fill:var(--hair-a)}.f-hair-b{fill:var(--hair-b)}
+.f-shirt-a{fill:var(--shirt-a)}.f-shirt-b{fill:var(--shirt-b)}
+.f-pants-a{fill:var(--pants-a)}.f-pants-b{fill:var(--pants-b)}
+.f-white{fill:var(--white)}.f-ink{fill:var(--ink)}.f-mouth{fill:var(--mouth)}.f-tongue{fill:var(--tongue)}
+.f-fire{fill:var(--fire)}
+.limb-o{stroke:var(--ink);stroke-width:16;stroke-linecap:round;fill:none}
+.limb-f{stroke-width:9;stroke-linecap:round;fill:none}
+.s-shirt-a{stroke:var(--shirt-a)}.s-shirt-b{stroke:var(--shirt-b)}.s-skin-a{stroke:var(--skin-a)}
+.line-ink{stroke:var(--ink);stroke-width:5;stroke-linecap:round;fill:none}
+.cheek{fill:var(--fire);opacity:.45}
+.vein path{stroke:var(--fire);stroke-width:4;stroke-linecap:round;fill:none}
+.star{fill:var(--sun);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
+
+.uArm,.fArm,.vHead,.vArm,.mouth,.vein,.orbit,.puff,.sweat{transform-origin:0 0}
+.uArm{transform:rotate(95deg);transition:transform .35s ease}
+.fArm{transform:rotate(-155deg);transition:transform .35s ease}
+.smile,.calm{display:none}
+.peace .smile,.peace .calm{display:block}
+.peace .mouth,.peace .vein,.peace .puff,.peace .angry,.peace .orbit,.peace .sweat{display:none}
+.peace .uArm{transform:rotate(85deg)}
+.peace .fArm{transform:rotate(-20deg)}
+.hitface{display:none}
+.ouch .normal{display:none}
+.ouch .hitface{display:block}
+.eye-bruise,.bump{opacity:0;transition:opacity .3s}
+.b1 .eye-bruise{opacity:.75}
+.b2 .bump{opacity:1}
+
+.aHead{animation:bob .32s ease-in-out infinite alternate}
+.mouth{animation:yell .24s ease-in-out infinite alternate}
+.vein{animation:vein .5s ease-in-out infinite alternate}
+.orbit{animation:orbit 1.8s linear infinite}
+.sweat{animation:sweat 1.4s ease-in infinite}
+.puff{animation:puff 1.1s ease-out infinite}
+.puff.d2{animation-delay:.55s}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-3px)}}
+@keyframes yell{from{transform:scaleY(.7)}to{transform:scaleY(1.12)}}
+@keyframes vein{from{transform:scale(.85)}to{transform:scale(1.2)}}
+@keyframes orbit{to{transform:rotate(360deg)}}
+@keyframes sweat{0%{transform:translateY(0);opacity:0}20%{opacity:1}100%{transform:translateY(22px);opacity:0}}
+@keyframes puff{0%{transform:translateY(0) scale(.5);opacity:0}15%{opacity:1}100%{transform:translateY(-28px) scale(1.35);opacity:0}}
+
+@media (prefers-reduced-motion:reduce){
+  .aHead,.mouth,.vein,.orbit,.sweat,.puff{animation:none}
+  .btn:active{transform:none}
+}
+</style>
+
+<main class="wrap">
+  <header class="head">
+    <p class="eyebrow">आज की ताज़ा ख़बर</p>
+    <h1>गुस्सा आ गया है!</h1>
+  </header>
+
+  <section class="panel" aria-label="गुस्सा कार्ड">
+    <div class="stage">
+      <svg id="scene" viewBox="0 0 400 340" role="img" aria-label="कार्टून: गुस्से वाली लड़की एक लड़के का कॉलर पकड़कर उसे मुक्के मार रही है">
+        <g transform="translate(0 20)">
+          <rect class="floor" x="0" y="286" width="400" height="60"/>
+          <line class="floorline" x1="0" y1="286" x2="400" y2="286"/>
+          <ellipse class="shadow" cx="120" cy="291" rx="52" ry="8"/>
+          <ellipse class="shadow" cx="285" cy="291" rx="48" ry="8"/>
+
+          <g id="pair">
+            <!-- Attacker -->
+            <g id="atk">
+              <rect class="o f-pants-a" x="96" y="236" width="22" height="50" rx="8"/>
+              <rect class="o f-pants-a" x="124" y="236" width="22" height="50" rx="8"/>
+              <ellipse class="o f-white" cx="110" cy="285" rx="20" ry="8"/>
+              <ellipse class="o f-white" cx="150" cy="285" rx="20" ry="8"/>
+              <path class="o f-shirt-a" d="M92 150 Q120 138 148 150 L154 246 Q120 256 86 246 Z"/>
+              <g transform="translate(120 103)">
+                <g class="aHead">
+                  <circle class="o f-hair-a" cx="-30" cy="-36" r="15"/>
+                  <circle class="o f-hair-a" cx="30" cy="-36" r="15"/>
+                  <circle class="o f-skin-a" cx="0" cy="0" r="38"/>
+                  <path class="o3 f-hair-a" d="M-38 -4 Q-40 -42 0 -44 Q40 -42 38 -4 Q26 -24 0 -24 Q-26 -24 -38 -4Z"/>
+                  <circle class="cheek" cx="-26" cy="20" r="7"/>
+                  <circle class="cheek" cx="26" cy="20" r="7"/>
+                  <ellipse class="o3 f-white" cx="-14" cy="6" rx="8" ry="7"/>
+                  <ellipse class="o3 f-white" cx="14" cy="6" rx="8" ry="7"/>
+                  <circle class="f-ink" cx="-11" cy="7" r="3.5"/>
+                  <circle class="f-ink" cx="17" cy="7" r="3.5"/>
+                  <g class="angry">
+                    <line class="line-ink" x1="-25" y1="-12" x2="-6" y2="-4"/>
+                    <line class="line-ink" x1="25" y1="-12" x2="6" y2="-4"/>
+                  </g>
+                  <g class="calm">
+                    <path class="line-ink" d="M-24 -9 Q-14 -15 -6 -9"/>
+                    <path class="line-ink" d="M24 -9 Q14 -15 6 -9"/>
+                  </g>
+                  <path class="smile line-ink" d="M-13 22 Q0 36 13 22"/>
+                  <g transform="translate(0 18)">
+                    <g class="mouth">
+                      <path class="o3 f-mouth" d="M-15 0 Q0 30 15 0 Z"/>
+                      <rect class="f-white" x="-11" y="1" width="22" height="6"/>
+                      <ellipse class="f-tongue" cx="0" cy="14" rx="8" ry="4"/>
+                    </g>
+                  </g>
+                  <g transform="translate(-45 4)"><circle class="puff o3 f-white" cx="0" cy="0" r="6"/></g>
+                  <g transform="translate(45 4)"><circle class="puff d2 o3 f-white" cx="0" cy="0" r="6"/></g>
+                  <g transform="translate(30 -42)">
+                    <g class="vein">
+                      <path d="M-13 -4 Q-6 -6 -4 -13 M13 -4 Q6 -6 4 -13 M-13 4 Q-6 6 -4 13 M13 4 Q6 6 4 13"/>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+
+            <!-- Victim -->
+            <g id="vic">
+              <rect class="o f-pants-b" x="264" y="236" width="22" height="50" rx="8"/>
+              <rect class="o f-pants-b" x="290" y="236" width="22" height="50" rx="8"/>
+              <ellipse class="o f-white" cx="266" cy="285" rx="20" ry="8"/>
+              <ellipse class="o f-white" cx="298" cy="285" rx="20" ry="8"/>
+              <g transform="translate(257 160)">
+                <g id="vArmL" class="vArm">
+                  <path class="limb-o" d="M0 0 Q-8 26 -4 54"/>
+                  <path class="limb-f s-shirt-b" d="M0 0 Q-8 26 -4 54"/>
+                  <circle class="o f-skin-b" cx="-4" cy="56" r="9"/>
+                </g>
+              </g>
+              <g transform="translate(313 160)">
+                <g id="vArmR" class="vArm">
+                  <path class="limb-o" d="M0 0 Q8 26 4 54"/>
+                  <path class="limb-f s-shirt-b" d="M0 0 Q8 26 4 54"/>
+                  <circle class="o f-skin-b" cx="4" cy="56" r="9"/>
+                </g>
+              </g>
+              <path class="o f-shirt-b" d="M257 150 Q285 140 313 150 L317 246 Q285 256 253 246 Z"/>
+              <path class="o3 f-white" d="M272 146 L285 166 L298 146 Z"/>
+              <g transform="translate(285 148)">
+                <g id="vHead" class="vHead">
+                  <circle class="o f-skin-b" cx="0" cy="-38" r="34"/>
+                  <path class="o3 f-hair-b" d="M-34 -50 L-30 -80 L-18 -62 L-8 -88 L2 -64 L14 -86 L20 -62 L32 -76 L34 -50 Q0 -64 -34 -50 Z"/>
+                  <circle class="bump o3" style="fill:#ff8a5c" cx="22" cy="-64" r="8"/>
+                  <ellipse class="eye-bruise" style="fill:var(--bruise)" cx="-12" cy="-36" rx="12" ry="12"/>
+                  <g class="normal">
+                    <ellipse class="o3 f-white" cx="-12" cy="-36" rx="7" ry="8"/>
+                    <ellipse class="o3 f-white" cx="12" cy="-36" rx="7" ry="8"/>
+                    <circle class="f-ink" cx="-14" cy="-35" r="3"/>
+                    <circle class="f-ink" cx="10" cy="-35" r="3"/>
+                    <line class="line-ink" style="stroke-width:4" x1="-20" y1="-47" x2="-6" y2="-53"/>
+                    <line class="line-ink" style="stroke-width:4" x1="20" y1="-47" x2="6" y2="-53"/>
+                    <path class="line-ink" style="stroke-width:3.5" d="M-9 -16 Q-4.5 -22 0 -16 T9 -16"/>
+                  </g>
+                  <g class="hitface">
+                    <path class="line-ink" style="stroke-width:4" d="M-19 -45 L-7 -37 L-19 -29"/>
+                    <path class="line-ink" style="stroke-width:4" d="M19 -45 L7 -37 L19 -29"/>
+                    <ellipse class="o3 f-mouth" cx="0" cy="-17" rx="8" ry="10"/>
+                  </g>
+                  <g transform="translate(42 -58)">
+                    <path class="sweat o3" style="fill:#6ad7ff" d="M0 -8 Q6 0 0 6 Q-6 0 0 -8Z"/>
+                  </g>
+                </g>
+              </g>
+              <g transform="translate(285 62)">
+                <g class="orbit">
+                  <polygon class="star" points="0,-26 3,-20 9,-20 4,-16 6,-10 0,-14 -6,-10 -4,-16 -9,-20 -3,-20" transform="translate(0 0)"/>
+                  <polygon class="star" points="0,-26 3,-20 9,-20 4,-16 6,-10 0,-14 -6,-10 -4,-16 -9,-20 -3,-20" transform="rotate(120)"/>
+                  <polygon class="star" points="0,-26 3,-20 9,-20 4,-16 6,-10 0,-14 -6,-10 -4,-16 -9,-20 -3,-20" transform="rotate(240)"/>
+                </g>
+              </g>
+            </g>
+
+            <!-- Grabbing arm -->
+            <path class="limb-o" d="M146 158 Q206 146 270 160"/>
+            <path class="limb-f s-shirt-a" d="M146 158 Q206 146 270 160"/>
+            <circle class="o f-skin-a" cx="272" cy="162" r="12"/>
+
+            <!-- Punching arm -->
+            <g transform="translate(142 174)">
+              <g id="uArm" class="uArm">
+                <line class="limb-o" x1="0" y1="0" x2="58" y2="0"/>
+                <line class="limb-f s-shirt-a" x1="0" y1="0" x2="58" y2="0"/>
+                <g transform="translate(58 0)">
+                  <g id="fArm" class="fArm">
+                    <line class="limb-o" x1="0" y1="0" x2="56" y2="0"/>
+                    <line class="limb-f s-skin-a" x1="0" y1="0" x2="56" y2="0"/>
+                    <circle class="o f-skin-a" cx="58" cy="0" r="15"/>
+                    <path class="o3" d="M52 -8 L52 8 M60 -10 L60 10" fill="none"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+
+          <g id="fx"></g>
+        </g>
+      </svg>
+
+      <div class="tag a"><input id="nameA" type="text" value="Nandini" maxlength="12" autocomplete="off" spellcheck="false" aria-label="गुस्से वाली किरदार का नाम"></div>
+      <div class="tag b"><input id="nameB" type="text" value="GOUR" maxlength="12" autocomplete="off" spellcheck="false" aria-label="पिटने वाले किरदार का नाम"></div>
+      <div class="sfx-layer" id="sfx" aria-hidden="true"></div>
+    </div>
+    <p class="caption" id="caption">माफ़ी माँग ले, वरना और पिटेगा!</p>
+  </section>
+
+  <button class="btn forgive" id="forgiveBtn" type="button" aria-pressed="false">माफ़ कर दे रे</button>
+
+  <div class="bar">
+    <button class="btn" id="soundBtn" type="button" aria-pressed="false">आवाज़ चालू करो</button>
+    <p class="count">अब तक पड़े मुक्के: <span class="n" id="count">0</span></p>
+  </div>
+  <p class="hint">ऊपर के नाम पर टैप करके अपने नाम लिख लो।</p>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  document.documentElement.lang = 'hi';
+  var NS = 'http://www.w3.org/2000/svg';
+  var $ = function(id){ return document.getElementById(id); };
+  var scene=$('scene'), pair=$('pair'), fx=$('fx'), uArm=$('uArm'), fArm=$('fArm'), vHead=$('vHead'),
+      armL=$('vArmL'), armR=$('vArmR'), sfx=$('sfx'), countEl=$('count'), caption=$('caption'),
+      soundBtn=$('soundBtn'), nameA=$('nameA'), nameB=$('nameB');
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canAnimate = typeof Element.prototype.animate === 'function';
+
+  /* names (kept only in this viewer's browser) */
+  function load(k, el){ try{ var v = localStorage.getItem(k); if(v) el.value = v; }catch(e){} }
+  function save(k, el){ try{ localStorage.setItem(k, el.value); }catch(e){} }
+  load('gussa-name-a2', nameA); load('gussa-name-b2', nameB);
+  nameA.addEventListener('input', function(){ save('gussa-name-a2', nameA); });
+  nameB.addEventListener('input', function(){ save('gussa-name-b2', nameB); });
+  [nameA, nameB].forEach(function(el){ el.addEventListener('focus', function(){ el.select(); }); });
+
+  /* sound (synthesised, no files) */
+  var ctx = null, master = null, noiseBuf = null, soundOn = false;
+  function ensureAudio(){
+    if(!ctx){
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if(!AC) return false;
+      try{
+        ctx = new AC();
+        var comp = ctx.createDynamicsCompressor();
+        master = ctx.createGain(); master.gain.value = 0.9;
+        master.connect(comp); comp.connect(ctx.destination);
+        var len = Math.floor(ctx.sampleRate * 0.4);
+        noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
+        var d = noiseBuf.getChannelData(0);
+        for(var i=0;i<len;i++) d[i] = Math.random()*2-1;
+      }catch(e){ ctx = null; return false; }
+    }
+    if(ctx.state === 'suspended') ctx.resume();
+    return true;
+  }
+  function playWhoosh(when){
+    if(!soundOn || !ctx) return;
+    var t = ctx.currentTime + when;
+    var n = ctx.createBufferSource(); n.buffer = noiseBuf;
+    var f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = 1.2;
+    f.frequency.setValueAtTime(500, t); f.frequency.exponentialRampToValueAtTime(2600, t+0.12);
+    var g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.14, t+0.06); g.gain.exponentialRampToValueAtTime(0.001, t+0.14);
+    n.connect(f); f.connect(g); g.connect(master); n.start(t); n.stop(t+0.15);
+  }
+  function playPunch(when){
+    if(!soundOn || !ctx) return;
+    var t = ctx.currentTime + when;
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(170, t); o.frequency.exponentialRampToValueAtTime(45, t+0.16);
+    g.gain.setValueAtTime(0.9, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.2);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t+0.22);
+    var n = ctx.createBufferSource(); n.buffer = noiseBuf;
+    var f = ctx.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1800; f.Q.value = 0.8;
+    var ng = ctx.createGain();
+    ng.gain.setValueAtTime(0.55, t); ng.gain.exponentialRampToValueAtTime(0.001, t+0.09);
+    n.connect(f); f.connect(ng); ng.connect(master); n.start(t); n.stop(t+0.1);
+  }
+  function playOuch(when){
+    if(!soundOn || !ctx) return;
+    var t = ctx.currentTime + when;
+    var base = 440 + Math.random()*180;
+    var o = ctx.createOscillator(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    o.type = 'triangle';
+    o.frequency.setValueAtTime(base, t); o.frequency.exponentialRampToValueAtTime(base*0.58, t+0.22);
+    f.type = 'lowpass'; f.frequency.value = 1400;
+    g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.22, t+0.02); g.gain.exponentialRampToValueAtTime(0.001, t+0.24);
+    o.connect(f); f.connect(g); g.connect(master); o.start(t); o.stop(t+0.26);
+  }
+  function playGrunt(when){
+    if(!soundOn || !ctx) return;
+    var t = ctx.currentTime + when;
+    var o = ctx.createOscillator(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    o.type = 'sawtooth';
+    o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(100, t+0.16);
+    f.type = 'lowpass'; f.frequency.value = 700;
+    g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.2, t+0.02); g.gain.exponentialRampToValueAtTime(0.001, t+0.18);
+    o.connect(f); f.connect(g); g.connect(master); o.start(t); o.stop(t+0.2);
+  }
+  soundBtn.addEventListener('click', function(){
+    if(!soundOn){
+      if(!ensureAudio()) return;
+      soundOn = true;
+      playPunch(0);
+    } else {
+      soundOn = false;
+    }
+    soundBtn.setAttribute('aria-pressed', String(soundOn));
+    soundBtn.textContent = soundOn ? 'आवाज़ बंद करो' : 'आवाज़ चालू करो';
+  });
+
+  /* fx helpers */
+  var IMPACT_X = 256, IMPACT_Y = 122;
+  function starPoints(n, r1, r2){
+    var p = [];
+    for(var i=0;i<n*2;i++){
+      var r = i%2 ? r2 : r1, a = Math.PI*i/n - Math.PI/2;
+      p.push((r*Math.cos(a)).toFixed(1)+','+(r*Math.sin(a)).toFixed(1));
+    }
+    return p.join(' ');
+  }
+  function burst(){
+    var g = document.createElementNS(NS, 'g');
+    g.setAttribute('transform', 'translate('+IMPACT_X+' '+IMPACT_Y+')');
+    var poly = document.createElementNS(NS, 'polygon');
+    poly.setAttribute('points', starPoints(10, 36, 16));
+    poly.setAttribute('fill', '#fff6a8'); poly.setAttribute('stroke', '#ff4d2e'); poly.setAttribute('stroke-width', '3');
+    poly.setAttribute('stroke-linejoin', 'round');
+    g.appendChild(poly);
+    fx.appendChild(g);
+    poly.style.transformOrigin = '0 0';
+    poly.animate([
+      {transform:'scale(.2) rotate(0deg)', opacity:1},
+      {transform:'scale(1.1) rotate(12deg)', opacity:1, offset:.35},
+      {transform:'scale(1.3) rotate(18deg)', opacity:0}
+    ], {duration:360, easing:'ease-out'}).onfinish = function(){ g.remove(); };
+    if(reduce) return;
+    var colors = ['#ffffff', '#ffd93b', '#ff4d2e'];
+    for(var i=0;i<7;i++){
+      var sg = document.createElementNS(NS, 'g');
+      sg.setAttribute('transform', 'translate('+IMPACT_X+' '+IMPACT_Y+')');
+      var c = document.createElementNS(NS, 'circle');
+      c.setAttribute('r', String(3 + Math.random()*3));
+      c.setAttribute('fill', colors[i % 3]); c.setAttribute('stroke', '#17112e'); c.setAttribute('stroke-width', '1.5');
+      sg.appendChild(c); fx.appendChild(sg);
+      var ang = Math.random()*Math.PI*2, dist = 40 + Math.random()*40;
+      c.animate([
+        {transform:'translate(0px,0px) scale(1)', opacity:1},
+        {transform:'translate('+(Math.cos(ang)*dist).toFixed(1)+'px,'+(Math.sin(ang)*dist).toFixed(1)+'px) scale(.2)', opacity:0}
+      ], {duration:420, easing:'ease-out'}).onfinish = (function(node){ return function(){ node.remove(); }; })(sg);
+    }
+  }
+  var words = ['धड़ाम!', 'पटाक!', 'चटाक!', 'धप्प!', 'ठाँय!', 'धम!', 'फटाक!'];
+  var lastWord = -1;
+  function sfxWord(text){
+    var label = text;
+    if(!label){
+      var i; do{ i = Math.floor(Math.random()*words.length); }while(i === lastWord);
+      lastWord = i; label = words[i];
+    }
+    var el = document.createElement('span');
+    el.className = 'sfx'; el.textContent = label;
+    el.style.left = (text ? 40 + Math.random()*20 : 52 + Math.random()*26) + '%';
+    el.style.top = (text ? 18 + Math.random()*12 : 22 + Math.random()*28) + '%';
+    var rot = (Math.random()*30 - 15).toFixed(1);
+    sfx.appendChild(el);
+    el.animate([
+      {transform:'translate(-50%,-50%) scale(.3) rotate('+rot+'deg)', opacity:0},
+      {transform:'translate(-50%,-50%) scale(1.15) rotate('+rot+'deg)', opacity:1, offset:.25},
+      {transform:'translate(-50%,-60%) scale(1) rotate('+rot+'deg)', opacity:1, offset:.7},
+      {transform:'translate(-50%,-90%) scale(.9) rotate('+rot+'deg)', opacity:0}
+    ], {duration:reduce ? 900 : 700, easing:'ease-out'}).onfinish = function(){ el.remove(); };
+  }
+  function shake(){
+    if(reduce) return;
+    var dx = (Math.random()*8-4).toFixed(1), dy = (Math.random()*6-3).toFixed(1);
+    scene.animate([
+      {transform:'translate(0,0)'},
+      {transform:'translate('+dx+'px,'+dy+'px)', offset:.3},
+      {transform:'translate('+(-dx/2)+'px,'+(-dy/2)+'px)', offset:.65},
+      {transform:'translate(0,0)'}
+    ], {duration:200, easing:'ease-out'});
+  }
+
+  /* the beating */
+  var D = 520, IMPACT = 0.34;
+  var hits = 0;
+  var lines = [
+    'माफ़ी माँग ले, वरना और पिटेगा!',
+    'फिर करेगा ऐसा? बोल!',
+    'सॉरी बोल, जल्दी!',
+    'आज तो छोड़ूँगी नहीं!'
+  ];
+  var lastLine = 0;
+
+  function impact(){
+    hits++;
+    countEl.textContent = hits;
+    if(hits === 3) scene.classList.add('b1');
+    if(hits === 7) scene.classList.add('b2');
+    var li = Math.floor(hits/4) % lines.length;
+    if(li !== lastLine){ lastLine = li; caption.textContent = lines[li]; }
+    vHead.classList.add('ouch');
+    setTimeout(function(){ vHead.classList.remove('ouch'); }, 320);
+    burst(); sfxWord(); shake();
+    vHead.animate([
+      {transform:'rotate(0deg)'},
+      {transform:'rotate(26deg)', offset:.18},
+      {transform:'rotate(-6deg)', offset:.5},
+      {transform:'rotate(3deg)', offset:.75},
+      {transform:'rotate(0deg)'}
+    ], {duration:480, easing:'ease-out'});
+    armL.animate([{transform:'rotate(0deg)'},{transform:'rotate(-28deg)', offset:.3},{transform:'rotate(0deg)'}], {duration:520, easing:'ease-out'});
+    armR.animate([{transform:'rotate(0deg)'},{transform:'rotate(24deg)', offset:.3},{transform:'rotate(0deg)'}], {duration:520, easing:'ease-out'});
+  }
+
+  var gruntFlip = false;
+  function punch(){
+    if(!canAnimate) return;
+    uArm.animate([
+      {transform:'rotate(95deg)', offset:0, easing:'ease-out'},
+      {transform:'rotate(112deg)', offset:.18, easing:'cubic-bezier(.55,0,1,.45)'},
+      {transform:'rotate(-24deg)', offset:IMPACT},
+      {transform:'rotate(-21deg)', offset:.5, easing:'ease-in-out'},
+      {transform:'rotate(95deg)', offset:1}
+    ], {duration:D});
+    fArm.animate([
+      {transform:'rotate(-155deg)', offset:0, easing:'ease-out'},
+      {transform:'rotate(-170deg)', offset:.18, easing:'cubic-bezier(.55,0,1,.45)'},
+      {transform:'rotate(2deg)', offset:IMPACT},
+      {transform:'rotate(6deg)', offset:.5, easing:'ease-in-out'},
+      {transform:'rotate(-155deg)', offset:1}
+    ], {duration:D});
+    pair.animate([
+      {transform:'translateX(0px)'},
+      {transform:'translateX(-3px)', offset:.18},
+      {transform:'translateX(7px)', offset:IMPACT},
+      {transform:'translateX(0px)'}
+    ], {duration:D, easing:'ease-out'});
+    var tImpact = D*IMPACT/1000;
+    playWhoosh(0.07);
+    playPunch(tImpact);
+    playOuch(tImpact + 0.04);
+    gruntFlip = !gruntFlip;
+    if(gruntFlip) playGrunt(0.03);
+    setTimeout(impact, D*IMPACT);
+  }
+
+  var pattern = [640, 640, 430, 430, 430, 1000], pi = 0, timer = null;
+  function loop(){
+    punch();
+    var d = pattern[pi++ % pattern.length] * (reduce ? 2 : 1);
+    timer = setTimeout(loop, d);
+  }
+  var peace = false, heartTimer = null;
+  function start(){ if(!timer && !peace) loop(); }
+  function stop(){ clearTimeout(timer); timer = null; }
+  document.addEventListener('visibilitychange', function(){ if(document.hidden) stop(); else start(); });
+
+  /* maaf kar de */
+  function heart(){
+    var g = document.createElementNS(NS, 'g');
+    g.setAttribute('transform', 'translate(' + (175 + Math.random()*70).toFixed(1) + ' 118)');
+    var h = document.createElementNS(NS, 'path');
+    h.setAttribute('d', 'M0 8 C-18 -4 -12 -20 0 -11 C12 -20 18 -4 0 8Z');
+    h.setAttribute('fill', Math.random() < 0.5 ? '#ff4d6d' : '#ff5fa2');
+    h.setAttribute('stroke', '#17112e'); h.setAttribute('stroke-width', '2.5'); h.setAttribute('stroke-linejoin', 'round');
+    g.appendChild(h); fx.appendChild(g);
+    var dx = Math.random()*30 - 15;
+    h.animate([
+      {transform:'translate(0px,0px) scale(.4)', opacity:0},
+      {transform:'translate(' + dx.toFixed(1) + 'px,-25px) scale(1)', opacity:1, offset:.2},
+      {transform:'translate(' + (dx*2).toFixed(1) + 'px,-95px) scale(1.1)', opacity:0}
+    ], {duration:1500, easing:'ease-out'}).onfinish = function(){ g.remove(); };
+  }
+  function playChime(){
+    if(!soundOn || !ctx) return;
+    var t0 = ctx.currentTime;
+    [660, 880, 1109].forEach(function(fq, i){
+      var o = ctx.createOscillator(), g = ctx.createGain(), t = t0 + i*0.13;
+      o.type = 'sine'; o.frequency.value = fq;
+      g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(0.25, t+0.02); g.gain.exponentialRampToValueAtTime(0.001, t+0.5);
+      o.connect(g); g.connect(master); o.start(t); o.stop(t+0.55);
+    });
+  }
+  var forgiveBtn = $('forgiveBtn');
+  forgiveBtn.addEventListener('click', function(){
+    peace = !peace;
+    forgiveBtn.setAttribute('aria-pressed', String(peace));
+    scene.classList.toggle('peace', peace);
+    if(peace){
+      stop();
+      forgiveBtn.textContent = 'फिर से गुस्सा करो';
+      caption.textContent = 'ठीक है... इस बार माफ़ किया!';
+      sfxWord('माफ़ किया!');
+      playChime();
+      for(var k=0;k<5;k++) setTimeout(heart, k*180);
+      heartTimer = setInterval(heart, 650);
+    } else {
+      clearInterval(heartTimer); heartTimer = null;
+      forgiveBtn.textContent = 'माफ़ कर दे रे';
+      caption.textContent = lines[lastLine];
+      start();
+    }
+  });
+  start();
+})();
+</script>
+
+</body></html>
